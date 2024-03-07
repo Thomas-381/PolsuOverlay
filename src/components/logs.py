@@ -164,7 +164,7 @@ class Logs:
 
                 active = get_active_window_title()
                 if any(client in active for client in CLIENT_NAMES):
-                    keyboard.press_and_release('t')
+                    keyboard.press_and_release('enter')
                     sleep(0.2)
                     keyboard.write('/who')
                     sleep(0.2)
