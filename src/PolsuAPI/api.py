@@ -144,46 +144,6 @@ class Polsu:
             self.logger.error(f"An error occurred while logging in!\n\nTraceback: {traceback.format_exc()} | {e}")
             return None
         
-    
-    async def logout(self, timestamp: int) -> None:
-        """
-        Logout of the Overlay
-
-
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n
-    ┃                                                                                                              ┃\n
-    ┃                                               >> WARNING <<                                                  ┃\n
-    ┃                                                                                                              ┃\n
-    ┃  • The following endpoint, '/internal/overlay/logout' is a private endpoint.                                 ┃\n
-    ┃                                                                                                              ┃\n
-    ┃  > IT IS STRICTLY FORBIDDEN TO USE IT OUTSIDE POLSU'S OFFICIAL OVERLAY.                                      ┃\n
-    ┃  > ANY USAGE OF THIS ENDPOINT FOR OTHER PROJECTS OR FORKS OF POLSU'S OVERLAY ISN'T ALLOWED!                  ┃\n
-    ┃                                                                                                              ┃\n
-    ┃  • If we notice any suspicious activity on this endpoint, following our Terms of Services, your api key and  ┃\n
-    ┃    therefore your Discord account, will get blacklisted from our Services!                                   ┃\n
-    ┃  > This means you won't be able to use any of our Services anymore, including Polsu and Polsu's Overlay.     ┃\n
-    ┃                                                                                                              ┃\n
-    ┃  • Note: This warning applies to all endpoints starting with: '/internal'                                    ┃\n
-    ┃  > You are only allowed to use the public endpoints, listed in the documentation at: https://api.polsu.xyz   ┃\n
-    ┃                                                                                                              ┃\n
-    ┃                                                                                                              ┃\n
-    ┃  • If you have any questions, don't hesitate to contact us on discord at: https://discord.polsu.xyz.         ┃\n
-    ┃                                                                                                              ┃\n
-    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n
-        """
-        try:
-            if DEV_MODE:
-                self.logger.info(f"POST /internal/overlay/logout?overlay=true")
-
-            async with ClientSession() as session:
-                async with session.post(f"{self.api}/internal/overlay/logout?timestamp={timestamp}&overlay=true", headers=self.polsuHeaders):
-                    pass
-        except ContentTypeError:
-            raise APIError
-        except Exception as e:
-            self.logger.error(f"An error occurred while logging out!\n\nTraceback: {traceback.format_exc()} | {e}")
-            return None
-        
 
     async def get_stats(self, player: str) -> Player:
         """
@@ -238,7 +198,7 @@ class Polsu:
                             f = open(f"{resource_path('src/PolsuAPI')}/schemas/nicked.json", mode="r", encoding="utf-8")
                             p = Player(load(f))
                             p.username = player
-                            p.rank = f"§4[NICKED] §c{player}"
+                            p.rank = f"§c{player}"
                             p.nicked = True
                             return p
                         else:
@@ -305,7 +265,8 @@ class Polsu:
                                 f = open(f"{resource_path('src/PolsuAPI')}/schemas/nicked.json", mode="r", encoding="utf-8")
                                 p = Player(load(f))
                                 p.username = players[i]
-                                p.rank = f"§4[NICKED] §c{players[i]}"
+                                p.rank = f"§c{players[i]}"
+                                p.nicked = True
                                 data.append(p)
                             else:
                                 data.append(Player(p.get('data')))
