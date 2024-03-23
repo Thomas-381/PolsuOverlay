@@ -141,7 +141,10 @@ Build the executable file
 ```shell
 pyinstaller --noconfirm build.spec
 ```
-
+or you have this
+```shell
+python -m PyInstaller --noconfirm build.spec
+```
 The executable file will be in the `dist` folder.  
 You can now run it!  
 
